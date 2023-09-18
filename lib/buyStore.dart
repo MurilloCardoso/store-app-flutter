@@ -1,4 +1,6 @@
+import 'package:balbina/db/Counter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BuyStore extends StatefulWidget {
   BuyStore(
@@ -396,7 +398,9 @@ class _BuyStoreState extends State<BuyStore> {
                         Container(
                             width: MediaQuery.of(context).size.width * 1,
                             child: ElevatedButton(
-                                onPressed: () {}, child: Text("Buy Now"))),
+                                onPressed: () {
+                                  context.read<Counter>().increment(1, "T-shirt");
+                                }, child: Text("Buy Now"))),
                         const SizedBox(
                           height: 15,
                         ),

@@ -1,4 +1,7 @@
+import 'package:balbina/db/Counter.dart';
+import 'package:balbina/db/Product.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -10,6 +13,8 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
+    List<Product> lista = context.watch<Counter>().listaCart;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -58,7 +63,7 @@ class _CartPageState extends State<CartPage> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Padding(
               padding: const EdgeInsets.all(10.0),
-              child: const Text(
+              child: Text(
                 "My Cart",
                 style: TextStyle(fontSize: 18),
               ),
@@ -66,7 +71,8 @@ class _CartPageState extends State<CartPage> {
             const SizedBox(
               height: 10,
             ),
-            Container(    width: MediaQuery.of(context).size.width * 1,
+            Container(
+                width: MediaQuery.of(context).size.width * 1,
                 child: ElevatedButton(
                     onPressed: () {}, child: Text("Continue payment"))),
             Container(
@@ -76,16 +82,19 @@ class _CartPageState extends State<CartPage> {
                   color: const Color.fromARGB(255, 226, 226, 226),
                   borderRadius: BorderRadius.all(Radius.circular(15))),
               child: ListView.builder(
-                itemCount: 4,
+                itemCount: lista.length,
                 itemBuilder: (context, index) {
-                  return Column(
+                  return 
+                  
+                  lista[index].name.isEmpty ? Container():
+                  Column(
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width * 1,
-                        child: const ListTile(
+                        child:  ListTile(
                           trailing: Icon(Icons.check),
-                          title: Text("Name Produt"),
-                          subtitle: Text("Qtd: 5"),
+                          title: Text(" ${lista[index].name} "),
+                          subtitle: Text("Qtd: ${lista[index].qtda.toString()}"),
                         ),
                       ),
                       const Divider(height: 0),

@@ -2,11 +2,25 @@ import 'package:balbina/Profile/profile.dart';
 import 'package:balbina/buyStore.dart';
 import 'package:balbina/cart/cart.dart';
 import 'package:balbina/componente/CardView.dart';
+import 'package:balbina/db/Counter.dart';
+import 'package:balbina/notification/notification.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// Flutter code sample for [NavigationBar].
 
-void main() => runApp(const NavigationBarApp());
+void main() {
+  runApp(
+    /// Providers are above [MyApp] instead of inside it, so that tests
+    /// can use [MyApp] while mocking the providers
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Counter()),
+      ],
+      child: const NavigationBarApp(),
+    ),
+  );
+}
 
 class NavigationBarApp extends StatelessWidget {
   const NavigationBarApp({super.key});
@@ -24,8 +38,7 @@ class NavigationBarApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           "buy": (BuildContext context) =>
               new BuyStore(nameProduct: 'Name Product', quantidadeAvaliacao: 0),
-                   "cart": (BuildContext context) =>
-              new CartPage(),
+          "cart": (BuildContext context) => new CartPage(),
         });
   }
 }
@@ -84,13 +97,16 @@ class _NavigationExampleState extends State<NavigationExample> {
         actions: [
           Container(
               margin: EdgeInsets.only(right: 10),
-              child: IconButton(icon: const Icon(Icons.local_grocery_store_rounded),onPressed: ()=>Navigator.of(context).pushNamed("cart"),))
+              child: IconButton(
+                icon: const Icon(Icons.local_grocery_store_rounded),
+                onPressed: () => Navigator.of(context).pushNamed("cart"),
+              ))
         ],
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Container(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 1,
-          decoration:const  BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow: [
@@ -397,14 +413,9 @@ class _NavigationExampleState extends State<NavigationExample> {
             ),
           ),
         ),
-        Container(
-          color: const Color.fromARGB(255, 255, 255, 255),
-          alignment: Alignment.center,
-          child: const Text('Page 3'),
-        ),
+       NotificacaoPage(),
         ProfilePage(),
       ][currentPageIndex],
     );
   }
 }
-
