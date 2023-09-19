@@ -58,9 +58,9 @@ class _CartPageState extends State<CartPage> {
       body: SafeArea(
           child: SingleChildScrollView(
         child: Container(
+          height: MediaQuery.of(context).size.height * 1,
           margin: const EdgeInsets.all(10),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child: Column(children: [
             const Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
@@ -72,37 +72,78 @@ class _CartPageState extends State<CartPage> {
               height: 10,
             ),
             Container(
-                width: MediaQuery.of(context).size.width * 1,
-                child: ElevatedButton(
-                    onPressed: () {}, child: Text("Continue payment"))),
+              width: MediaQuery.of(context).size.width * 1,
+              child: ElevatedButton(
+                onPressed: () {
+                  for (int i = 0; i < lista.length; i++) {
+                    context.read<Counter>().buy(lista[i]);
+                  }
+                  setState(() {
+                    context.read<Counter>().ClearCart();
+                  });
+                },
+                child: Text("Continue payment"),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.width * 0.8,
-              decoration: const BoxDecoration(
-                  color: const Color.fromARGB(255, 226, 226, 226),
-                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              height: MediaQuery.of(context).size.height * lista.length / 8,
               child: ListView.builder(
                 itemCount: lista.length,
                 itemBuilder: (context, index) {
-                  return 
-                  
-                  lista[index].name.isEmpty ? Container():
-                  Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 1,
-                        child:  ListTile(
-                          trailing: Icon(Icons.check),
-                          title: Text(" ${lista[index].name} "),
-                          subtitle: Text("Qtd: ${lista[index].qtda.toString()}"),
-                        ),
-                      ),
-                      const Divider(height: 0),
-                    ],
-                  );
+                  return lista[index].name.isEmpty
+                      ? Container()
+                      : Container(
+                          margin: EdgeInsets.only(top: 20),
+                          decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(15)),
+                          height: MediaQuery.of(context).size.height * 1,
+                          width: MediaQuery.of(context).size.width * 1,
+                          child: Column(
+                            children: [
+                              ListTile(
+                                onTap: () => Navigator.of(context)
+                                    .pushNamed("buy", arguments: {
+                                  'produto': lista[index],
+                                }),
+                                leading: Image.network(
+                                  lista[index].linkPic.trim(),
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                ),
+                                trailing: Icon(Icons.check),
+                                title: Text(" ${lista[index].name} "),
+                                subtitle: Text(
+                                    "Qtd: ${lista[index].qtda.toString()}"),
+                              ),
+                              const Divider(height: 0),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 1,
+                                child: Row(children: [
+                                  Icon(Icons.plus_one),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.add_box))
+                                ]),
+                              ),
+                              const Divider(height: 0),
+                            ],
+                          ),
+                        );
                 },
               ),
             ),
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    context.read<Counter>().ClearCart();
+                  });
+                },
+                child: Text("Limpar lista"))
           ]),
         ),
       )),

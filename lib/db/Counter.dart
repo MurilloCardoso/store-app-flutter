@@ -2,24 +2,29 @@
 import 'package:balbina/db/Product.dart';
 import 'package:flutter/foundation.dart';
 
-
-
 class Counter with ChangeNotifier, DiagnosticableTreeMixin {
   int _count = 0;
-  
-  
 
-  List<Product> listaCart= [];
-    List<Product> listaBuy= [];
+  List<Product> listaCart = [];
+  List<Product> listaBuy = [];
   int get count => _count;
 
   void increment(Product prod) {
     listaCart.add(prod);
     notifyListeners();
   }
-    void buy(Product prod) {
+
+  void buy(Product prod) {
     listaBuy.add(prod);
     notifyListeners();
+  }
+
+  void ClearCart() {
+    listaCart.clear();
+  }
+
+  void ClearBuy() {
+    listaBuy.clear();
   }
 
   /// Makes `Counter` readable inside the devtools by listing all of its properties

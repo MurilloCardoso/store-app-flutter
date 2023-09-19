@@ -392,7 +392,7 @@ class _NavigationExampleState extends State<NavigationExample> {
                         const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            "Rawawdwadadadawds",
+                            "Populares",
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),

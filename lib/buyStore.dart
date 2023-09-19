@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BuyStore extends StatefulWidget {
-
   BuyStore({Key? key}) : super(key: key); // Corrija a declaração do construtor
 
   @override
@@ -12,42 +11,45 @@ class BuyStore extends StatefulWidget {
 }
 
 class _BuyStoreState extends State<BuyStore> {
+  static List<String> list = <String>['1', '2', '3', '4'];
+
+  String dropdownValue = list.first;
   @override
   Widget build(BuildContext context) {
-final routes =
-  ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final routes =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
-Product prod = new Product("", 0, "");
-routes.forEach((key, value) {
-  if (value is Product) {
-    print("Name: ${value.name}");
- prod.name= value.name;
- prod.qtda= value.qtda; 
-prod.linkPic= value.linkPic;
-    // Faça o que você precisa com as propriedades da classe 'Product' aqui
-  }
-});
+    Product prod = new Product("", 0, "");
+    routes.forEach((key, value) {
+      if (value is Product) {
+        print("Name: ${value.name}");
+        prod.name = value.name;
+        prod.qtda = value.qtda;
+        prod.linkPic = value.linkPic;
+        // Faça o que você precisa com as propriedades da classe 'Product' aqui
+      }
+    });
     List<String> images = [
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
     ];
-    const List<String> list = <String>['1', '2', '3', '4'];
-
-    String dropdownValue = list.first;
     return Scaffold(
       appBar: AppBar(
         actions: [
           Container(
-              margin:const EdgeInsets.only(right: 10),
-              child: const Icon(Icons.local_grocery_store_rounded))
+              margin: const EdgeInsets.only(right: 10),
+              child: IconButton(
+                icon: const Icon(Icons.local_grocery_store_rounded),
+                onPressed: () => {Navigator.of(context).pushNamed("cart")},
+              ))
         ],
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Container(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 1,
-          decoration:const BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow: [
@@ -61,9 +63,9 @@ prod.linkPic= value.linkPic;
           child: Container(
             width: MediaQuery.of(context).size.width * 0.8,
             color: Colors.transparent, // Remova a cor de fundo
-            margin:
-               const EdgeInsets.only(left: 10, right: 10), // Adicione margem interna
-            child:const TextField(
+            margin: const EdgeInsets.only(
+                left: 10, right: 10), // Adicione margem interna
+            child: const TextField(
               style: TextStyle(
                   fontSize: 16), // Aumente o tamanho da fonte do texto
               decoration: InputDecoration(
@@ -87,7 +89,7 @@ prod.linkPic= value.linkPic;
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-           const SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
@@ -98,14 +100,14 @@ prod.linkPic= value.linkPic;
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
-                       prod.name.isEmpty? "" : prod.name,
-                        style:const TextStyle(fontSize: 16),
+                        prod.name.isEmpty ? "" : prod.name,
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                       const SizedBox(
+                        const SizedBox(
                           child: Row(
                             children: [
                               Row(
@@ -175,9 +177,7 @@ prod.linkPic= value.linkPic;
                               ),
                               Center(
                                   child: Text(
-                                "(" +
-                                    "12.200" +
-                                    ")",
+                                "(" + "12.200" + ")",
                                 style: TextStyle(fontSize: 8),
                               ))
                             ],
@@ -204,7 +204,7 @@ prod.linkPic= value.linkPic;
                     height: MediaQuery.of(context).size.height * 0.5,
                     width: MediaQuery.of(context).size.width * .9,
                     child: PageView.builder(
-                        itemCount:   prod.linkPic.length,
+                        itemCount: prod.linkPic.length,
                         pageSnapping: true,
                         itemBuilder: (context, pagePosition) {
                           return Container(
@@ -405,14 +405,32 @@ prod.linkPic= value.linkPic;
                         Container(
                             width: MediaQuery.of(context).size.width * 1,
                             child: ElevatedButton(
-                                onPressed: () {}, child: Text("Add to Cart"))),
+                                onPressed: () {
+                                  setState(() {
+                                    prod.qtda = int.parse(dropdownValue);
+                                  });
+                                  Product productToBuy = new Product(
+                                      prod.name, prod.qtda, prod.linkPic);
+                                  context
+                                      .read<Counter>()
+                                      .increment(productToBuy);
+                                },
+                                child: Text("Add to Cart"))),
                         Container(
                             width: MediaQuery.of(context).size.width * 1,
                             child: ElevatedButton(
                                 onPressed: () {
-                                 
-                                  context.read<Counter>().increment(prod);
-                                }, child: Text("Buy Now"))),
+                                  setState(() {
+                                    prod.qtda = int.parse(dropdownValue);
+                                  });
+                                  Product productToBuy = new Product(
+                                      prod.name, prod.qtda, prod.linkPic);
+                                  context
+                                      .read<Counter>()
+                                      .increment(productToBuy);
+                                  Navigator.of(context).pushNamed("cart");
+                                },
+                                child: Text("Buy Now"))),
                         const SizedBox(
                           height: 15,
                         ),
@@ -422,12 +440,14 @@ prod.linkPic= value.linkPic;
                               "Add to Lists",
                               style: TextStyle(
                                   color: Colors.blueAccent,
-                                  fontWeight: FontWeight.bold,fontSize: 16),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
                             ),
                           ],
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.start,  crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -472,7 +492,6 @@ prod.linkPic= value.linkPic;
                                   height: 10,
                                 ),
                                 Container(
-                                
                                   width: MediaQuery.of(context).size.width *
                                       0.6, // Use a largura máxima disponível
                                   child: const Text(
