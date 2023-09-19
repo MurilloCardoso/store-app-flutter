@@ -17,9 +17,15 @@ class _BuyStoreState extends State<BuyStore> {
 final routes =
   ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
+Product prod = new Product("", 0, "");
 routes.forEach((key, value) {
-  print(key);
-  // Faça o que você precisa com 'key' e 'value' aqui
+  if (value is Product) {
+    print("Name: ${value.name}");
+ prod.name= value.name;
+ prod.qtda= value.qtda; 
+prod.linkPic= value.linkPic;
+    // Faça o que você precisa com as propriedades da classe 'Product' aqui
+  }
 });
     List<String> images = [
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
@@ -92,17 +98,17 @@ routes.forEach((key, value) {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
-                        "widget.routes.nameProduct",
+                       prod.name.isEmpty? "" : prod.name,
                         style:const TextStyle(fontSize: 16),
                       ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
+                       const SizedBox(
                           child: Row(
                             children: [
-                              const Row(
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -198,7 +204,7 @@ routes.forEach((key, value) {
                     height: MediaQuery.of(context).size.height * 0.5,
                     width: MediaQuery.of(context).size.width * .9,
                     child: PageView.builder(
-                        itemCount: images.length,
+                        itemCount:   prod.linkPic.length,
                         pageSnapping: true,
                         itemBuilder: (context, pagePosition) {
                           return Container(
@@ -215,7 +221,7 @@ routes.forEach((key, value) {
                                 fit: StackFit.expand,
                                 children: [
                                   Image.network(
-                                    images[pagePosition],
+                                    prod.linkPic,
                                     fit: BoxFit.cover,
                                   ),
                                 ],
@@ -404,8 +410,8 @@ routes.forEach((key, value) {
                             width: MediaQuery.of(context).size.width * 1,
                             child: ElevatedButton(
                                 onPressed: () {
-                                //  Product prod =new Product(widget.link.link);
-                                //  context.read<Counter>().increment(prod);
+                                 
+                                  context.read<Counter>().increment(prod);
                                 }, child: Text("Buy Now"))),
                         const SizedBox(
                           height: 15,

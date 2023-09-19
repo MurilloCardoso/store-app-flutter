@@ -8,4 +8,5 @@ class Product {
     this.qtda= qtda;
     this.linkPic= linkPic;
   }
+
 }
