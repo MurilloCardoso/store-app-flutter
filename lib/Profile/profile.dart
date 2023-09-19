@@ -1,4 +1,5 @@
 import 'package:balbina/componente/CardView.dart';
+import 'package:balbina/db/Product.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -105,7 +106,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           margin: EdgeInsets.all(5),
                           child: CardView(
                             link:
-                                "https://down-br.img.susercontent.com/file/br-11134201-23030-hxch0lxg8vov16",
+                               Product("T-shirt Barcelona", 10,
+        "https://down-br.img.susercontent.com/file/br-11134201-23030-hxch0lxg8vov16"),
                           ),
                         );
                       },

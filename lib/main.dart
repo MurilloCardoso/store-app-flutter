@@ -3,6 +3,7 @@ import 'package:balbina/buyStore.dart';
 import 'package:balbina/cart/cart.dart';
 import 'package:balbina/componente/CardView.dart';
 import 'package:balbina/db/Counter.dart';
+import 'package:balbina/db/Product.dart';
 import 'package:balbina/notification/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +37,7 @@ class NavigationBarApp extends StatelessWidget {
         home: const NavigationExample(title: 'Store'),
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{
-          "buy": (BuildContext context) =>
-              new BuyStore(nameProduct: 'Name Product', quantidadeAvaliacao: 0),
+          "buy": (BuildContext context) => new BuyStore(),
           "cart": (BuildContext context) => new CartPage(),
         });
   }
@@ -53,6 +53,17 @@ class NavigationExample extends StatefulWidget {
 
 class _NavigationExampleState extends State<NavigationExample> {
   int currentPageIndex = 0;
+
+  List<Product> db = [
+    Product("T-shirt Luffy", 20,
+        "https://cf.shopee.com.br/file/072eaf8e46f41c3f5fd718281bc16f73"),
+    Product("T-shirt Barcelona", 10,
+        "https://down-br.img.susercontent.com/file/br-11134201-23030-hxch0lxg8vov16"),
+    Product("T-shirt Luffy", 20,
+        "https://cf.shopee.com.br/file/072eaf8e46f41c3f5fd718281bc16f73"),
+    Product("T-shirt Barcelona", 10,
+        "https://down-br.img.susercontent.com/file/br-11134201-23030-hxch0lxg8vov16")
+  ];
   List<String> images = [
     "https://cf.shopee.com.br/file/br-50009109-9783f8c56be6849a9080bf954abb04b8_xxhdpi",
     "https://cf.shopee.com.br/file/br-50009109-5489624a4f8b864293bf3e056af4c08a_xxhdpi"
@@ -120,9 +131,9 @@ class _NavigationExampleState extends State<NavigationExample> {
           child: Container(
             width: MediaQuery.of(context).size.width * 0.8,
             color: Colors.transparent, // Remova a cor de fundo
-            margin:
-                EdgeInsets.only(left: 10, right: 10), // Adicione margem interna
-            child: TextField(
+            margin: const EdgeInsets.only(
+                left: 10, right: 10), // Adicione margem interna
+            child: const TextField(
               style: TextStyle(
                   fontSize: 16), // Aumente o tamanho da fonte do texto
               decoration: InputDecoration(
@@ -176,15 +187,16 @@ class _NavigationExampleState extends State<NavigationExample> {
                       }),
                 ),
                 Container(
-                    decoration:
-                        BoxDecoration(color: Colors.grey[200], boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey, // Cor da sombra
-                        blurRadius: 2, // Raio de desfoque
-                        offset: Offset(0,
-                            1), // Deslocamento da sombra (horizontal, vertical)
-                      ),
-                    ]),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey, // Cor da sombra
+                            blurRadius: 2, // Raio de desfoque
+                            offset: Offset(0,
+                                1), // Deslocamento da sombra (horizontal, vertical)
+                          ),
+                        ]),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -201,23 +213,26 @@ class _NavigationExampleState extends State<NavigationExample> {
                           height: MediaQuery.of(context).size.height * 0.85,
                           child: ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 4, // Número de colunas
+                            itemCount: db.length, // Número de colunas
                             itemBuilder: (context, columnIndex) {
-                              return Row(
-                                children: List.generate(2, (rowIndex) {
-                                  final itemIndex = columnIndex * 2 + rowIndex;
-                                  if (itemIndex >= 4) {
-                                    return SizedBox.shrink();
-                                  }
-                                  return Expanded(
-                                      child: Container(
-                                    margin: EdgeInsets.all(5),
-                                    child: CardView(
-                                      link:
-                                          "https://cf.shopee.com.br/file/072eaf8e46f41c3f5fd718281bc16f73",
-                                    ),
-                                  )); // Certifique-se de que CardView esteja importado corretamente
-                                }),
+                              return Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                child: Row(
+                                  children: List.generate(2, (rowIndex) {
+                                    final itemIndex =
+                                        columnIndex * 2 + rowIndex;
+                                    if (itemIndex >= 4) {
+                                      return SizedBox.shrink();
+                                    }
+                                    return Expanded(
+                                        child: Container(
+                                      margin: EdgeInsets.all(5),
+                                      child: CardView(
+                                        link: db[columnIndex],
+                                      ),
+                                    )); // Certifique-se de que CardView esteja importado corretamente
+                                  }),
+                                ),
                               );
                             },
                           ),
@@ -231,7 +246,7 @@ class _NavigationExampleState extends State<NavigationExample> {
                           ),
                         ),
                         Container(
-                            margin: EdgeInsets.only(
+                            margin: const EdgeInsets.only(
                                 top: 5, bottom: 15, left: 10, right: 10),
                             width: MediaQuery.of(context).size.width * 1,
                             child: Row(
@@ -240,7 +255,7 @@ class _NavigationExampleState extends State<NavigationExample> {
                                 Column(
                                   children: [
                                     Container(
-                                        padding: EdgeInsets.all(8),
+                                        padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                             color: Colors.grey[200],
                                             borderRadius:
@@ -267,11 +282,12 @@ class _NavigationExampleState extends State<NavigationExample> {
                                 Column(
                                   children: [
                                     Container(
-                                        padding: EdgeInsets.all(8),
+                                        padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                             color: Colors.grey[200],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50))),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50))),
                                         child: Icon(
                                           Icons.account_balance_rounded,
                                           size: MediaQuery.of(context)
@@ -293,11 +309,12 @@ class _NavigationExampleState extends State<NavigationExample> {
                                 Column(
                                   children: [
                                     Container(
-                                        padding: EdgeInsets.all(8),
+                                        padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                             color: Colors.grey[200],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50))),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50))),
                                         child: Icon(
                                           Icons.gif_box_rounded,
                                           size: MediaQuery.of(context)
@@ -319,11 +336,12 @@ class _NavigationExampleState extends State<NavigationExample> {
                                 Column(
                                   children: [
                                     Container(
-                                        padding: EdgeInsets.all(8),
+                                        padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                             color: Colors.grey[200],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50))),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50))),
                                         child: Icon(
                                           Icons.account_box_sharp,
                                           size: MediaQuery.of(context)
@@ -345,11 +363,12 @@ class _NavigationExampleState extends State<NavigationExample> {
                                 Column(
                                   children: [
                                     Container(
-                                        padding: EdgeInsets.all(8),
+                                        padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                             color: Colors.grey[200],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50))),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50))),
                                         child: Icon(
                                           Icons.wallet_giftcard_rounded,
                                           size: MediaQuery.of(context)
@@ -382,7 +401,7 @@ class _NavigationExampleState extends State<NavigationExample> {
                           height: MediaQuery.of(context).size.height * 0.85,
                           child: ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 4, // Número de colunas
+                            itemCount: db.length, // Número de colunas
                             itemBuilder: (context, columnIndex) {
                               return Container(
                                 margin: EdgeInsets.only(bottom: 10),
@@ -397,8 +416,7 @@ class _NavigationExampleState extends State<NavigationExample> {
                                         child: Container(
                                       margin: EdgeInsets.all(5),
                                       child: CardView(
-                                        link:
-                                            "https://down-br.img.susercontent.com/file/br-11134201-23030-hxch0lxg8vov16",
+                                        link: db[columnIndex],
                                       ),
                                     )); // Certifique-se de que CardView esteja importado corretamente
                                   }),
@@ -413,7 +431,7 @@ class _NavigationExampleState extends State<NavigationExample> {
             ),
           ),
         ),
-       NotificacaoPage(),
+        NotificacaoPage(),
         ProfilePage(),
       ][currentPageIndex],
     );

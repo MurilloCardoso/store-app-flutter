@@ -10,11 +10,15 @@ class Counter with ChangeNotifier, DiagnosticableTreeMixin {
   
 
   List<Product> listaCart= [];
+    List<Product> listaBuy= [];
   int get count => _count;
 
-  void increment(int qtda, String s) {
-    Product prod=new Product(s, qtda);
+  void increment(Product prod) {
     listaCart.add(prod);
+    notifyListeners();
+  }
+    void buy(Product prod) {
+    listaBuy.add(prod);
     notifyListeners();
   }
 

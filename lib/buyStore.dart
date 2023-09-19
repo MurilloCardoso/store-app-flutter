@@ -1,14 +1,12 @@
 import 'package:balbina/db/Counter.dart';
+import 'package:balbina/db/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BuyStore extends StatefulWidget {
-  BuyStore(
-      {super.key,
-      required this.nameProduct,
-      required this.quantidadeAvaliacao});
-  String nameProduct;
-  double quantidadeAvaliacao;
+
+  BuyStore({Key? key}) : super(key: key); // Corrija a declaração do construtor
+
   @override
   State<BuyStore> createState() => _BuyStoreState();
 }
@@ -16,13 +14,20 @@ class BuyStore extends StatefulWidget {
 class _BuyStoreState extends State<BuyStore> {
   @override
   Widget build(BuildContext context) {
+final routes =
+  ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+routes.forEach((key, value) {
+  print(key);
+  // Faça o que você precisa com 'key' e 'value' aqui
+});
     List<String> images = [
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
       "https://down-br.img.susercontent.com/file/e77ba1fc80591e73642fa55f67ebd914",
     ];
-    const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+    const List<String> list = <String>['1', '2', '3', '4'];
 
     String dropdownValue = list.first;
     return Scaffold(
@@ -87,7 +92,7 @@ class _BuyStoreState extends State<BuyStore> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
-                        widget.nameProduct,
+                        "widget.routes.nameProduct",
                         style:const TextStyle(fontSize: 16),
                       ),
                     ),
@@ -165,7 +170,7 @@ class _BuyStoreState extends State<BuyStore> {
                               Center(
                                   child: Text(
                                 "(" +
-                                    widget.quantidadeAvaliacao.toString() +
+                                    "12.200" +
                                     ")",
                                 style: TextStyle(fontSize: 8),
                               ))
@@ -399,7 +404,8 @@ class _BuyStoreState extends State<BuyStore> {
                             width: MediaQuery.of(context).size.width * 1,
                             child: ElevatedButton(
                                 onPressed: () {
-                                  context.read<Counter>().increment(1, "T-shirt");
+                                //  Product prod =new Product(widget.link.link);
+                                //  context.read<Counter>().increment(prod);
                                 }, child: Text("Buy Now"))),
                         const SizedBox(
                           height: 15,

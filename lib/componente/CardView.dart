@@ -1,7 +1,8 @@
+import 'package:balbina/db/Product.dart';
 import 'package:flutter/material.dart';
 
 class CardView extends StatefulWidget {
-  final String link;
+  final Product link;
   CardView({
     super.key,
     required this.link,
@@ -15,7 +16,10 @@ class _CardViewState extends State<CardView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=>  Navigator.of(context).pushNamed("buy"),
+      onTap: ()=>  Navigator.of(context).pushNamed("buy", arguments: {
+  'produto': widget.link,
+  
+}),
       child: Container(
               
         padding: const EdgeInsets.only(bottom: 5),
@@ -39,10 +43,10 @@ class _CardViewState extends State<CardView> {
           mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          widget.link.isEmpty
+      widget.link.linkPic.isEmpty
           ?Container():
           Image.network(
-            widget.link,
+            widget.link.linkPic,
             fit: BoxFit.fill,
                    height: MediaQuery.of(context).size.height * 0.3,
           ),
@@ -52,9 +56,9 @@ class _CardViewState extends State<CardView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "T-Shirt Luffy",
-                  style: TextStyle(
+               Text(
+                  widget.link.name.isEmpty? "":widget.link.name ,
+                  style:const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w800,
                   ),
